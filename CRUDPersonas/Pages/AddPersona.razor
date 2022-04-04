@@ -1,0 +1,66 @@
+﻿@page "/AddPersona"
+@using CRUDPersonas.Data
+@inject PersonaService personaService
+@inject NavigationManager NavigationManager
+
+
+
+
+<h3>Agregar Persona</h3>
+<hr />
+<form>
+    <div class="row">
+        <div class="col-md-8"> 
+            <div class="form-group" id="Nombre">
+                <label for="Nombre" class="control-label">Nombre</label>
+                <input form="Nombre" class="form-control" @bind="@obj.Nombre" />
+            </div>
+            <div class="form-group">
+                <label for="Apellido" class="control-label">Apellido</label>
+                <input form="Apellido" class="form-control" @bind="@obj.Apellido" />
+            </div>
+            <div class="form-group">
+                <label for="Documento" class="control-label">Documento</label>
+                <input form="Documento" class="form-control" @bind="@obj.Nro_Documento"/>
+            </div>
+            <div class="form-group">
+                <label for="Email" class="control-label">Email</label>
+                <input form="Email" type="email" class="form-control" @bind="@obj.Correo_Electronico"/>
+            </div>
+            </div>
+            <div class="form-group">
+                <label for="Telefono" class="control-label">Teléfono</label>
+                <input form="Telefono" class="form-control" @bind="@obj.Telefono" />
+            </div>
+            <div class="form-group">
+                <label for="FechaNacimiento" class="control-label">Fecha de Nacimiento</label>
+                <input form="FechaNacimiento" type="date" class="form-control" @bind="@obj.Fecha_Nacimiento" />
+            </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@CreatePersona" value="Guardar"/>
+                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancelar"/>
+            </div>
+        </div>
+    </div>
+</form>
+ 
+@code {
+    Persona obj = new Persona();
+    protected async void CreatePersona()
+    {
+        await personaService.InsertPersonaAsync(obj);
+        NavigationManager.NavigateTo("Personas");
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("Personas");
+    }
+    private void HandleValidSubmit()  
+    {  
+        Console.WriteLine("OnValidSubmit");  
+    }  
+}

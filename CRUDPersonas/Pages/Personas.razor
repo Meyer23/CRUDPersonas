@@ -1,0 +1,63 @@
+﻿@page "/Personas"
+@using CRUDPersonas.Data
+@inject PersonaService personaService
+
+<NavLink class="nav-link href="AddPerona">
+    <span class="oi oi-plus" aria-hidden="true">Agregar Nuevo</span>
+</NavLink>
+
+
+<h3>Personas - Info</h3>
+
+@if (PerObj is null)
+{
+    <p><em>Cargando... !</em></p>
+}
+else
+{
+    <table class="table">
+            <thead>
+                <tr>
+                    <th>Persona Id</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Nro. Documento</th>
+                    <th>Correo Electrónico</th>
+                    <th>Fecha de Nacimiento</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+        <tbody>
+            @foreach(var per in PerObj)
+                {
+            <tr>
+                <td>@per.Id</td>
+                <td>@per.Nombre</td>
+                <td>@per.Apellido</td>
+                <td>@per.Nro_Documento</td>
+                <td>@per.Correo_Electronico</td>
+                <td>@per.Fecha_Nacimiento</td>
+                <td>
+                    <a class="nav-link" href="EditPersona/@per.Id">
+                        <span class="oi oi-pencil" aria-hidden="true">Editar</span>
+                    </a>
+                    <a class="nav-link" href="Delete/@per.Id">
+                        <span class="oi oi-trash" aria-hidden="true">Eliminar</span>
+                    </a>
+                </td>
+            </tr>
+                }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    List<Persona> PerObj;
+    protected override async Task OnInitializedAsync()
+    {
+        PerObj = await Task.Run(() => personaService.GetAllPersonasAsync());
+    }
+
+    
+}

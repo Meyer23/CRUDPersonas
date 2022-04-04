@@ -1,0 +1,71 @@
+﻿@page "/Delete/{id}"
+@using CRUDPersonas.Data
+@inject PersonaService personaService
+@inject NavigationManager NavigationManager
+
+
+<h2>Eliminar Persona</h2>
+<hr />
+<h3>Estás seguro de eliminar a esta persona?</h3>
+<form>
+    <div class="row">
+        <div class=" col-md-8">
+            <div class="form-group">
+                <label>Employee Id:</label>
+                <label>@obj.Id</label>
+            </div>
+            <div class="form-group">
+                <label>Nombre:</label>
+                <label>@obj.Nombre</label>
+            </div>
+            <div class="form-group">
+                <label>Apellido</label>
+                <label>@obj.Apellido</label>
+            </div>
+            <div class="form-group">
+                <label>Documento</label>
+                <label>@obj.Nro_Documento</label>
+            </div>
+            <div class="form-group">
+                <label>Correo Electrónico</label>
+                <label>@obj.Correo_Electronico</label>
+            </div>
+            <div class="form-group">
+                <label>Teléfono</label>
+                <label>@obj.Telefono</label>
+            </div>
+            <div class="form-group">
+                <label>Fecha de Nacimiento</label>
+                <label>@obj.Fecha_Nacimiento</label>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-danger" @onclick="@DeletePersona" value="Eliminar" />
+                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancelar" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    Persona obj = new Persona();
+    protected override async Task OnInitializedAsync()
+    {
+        obj = await Task.Run(() => personaService.GetPersonaAsync(Convert.ToInt32(Id)));
+    }
+    protected async void DeletePersona()
+    {
+        await personaService.DeletePersonaAsync(obj);
+        NavigationManager.NavigateTo("Personas");
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("Personas");
+    }
+}
